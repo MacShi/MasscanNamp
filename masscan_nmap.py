@@ -79,7 +79,7 @@ if __name__ == '__main__':
     task_queue = extract_masscan_json('result.json')
     run_nmap(5,task_queue,result_queue)
     save_service_info(result_queue)
-    # nmap_scan_port({'ip':'103.131.169.218','port':'2100'})
+    # nmap_scan_port({'ip':'127.0.0.1','port':'2100'})
     # run_masscan()
     # task_queue = extract_masscan_json('result.json')
     # while not task_queue.empty():
@@ -87,7 +87,3 @@ if __name__ == '__main__':
     # run_masscan()
 
 
-
-
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
