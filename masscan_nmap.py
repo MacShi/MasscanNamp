@@ -37,7 +37,7 @@ def nmap_scan_port(ip_port:dict,result_queue:Queue)->Queue:
         if None!=service:
             result_queue.put('{},{},{}'.format(ip, port, service))
         else:
-            result_queue.put('{},{},{}'.format(ip, port, 'None'))
+            result_queue.put('{},{},{}'.format(ip, port, '-'))
         print(msg)
         return result_queue
     except  Exception as e:
@@ -49,7 +49,10 @@ def extract_masscan_json(result:str)->Queue:
         for line in ff.readlines():
             line = line.strip()
             if line !='[' and line!=',' and line !=']':
-                tmp = json.loads(line)
+                if "," == line[-1]:
+                    tmp = json.loads(line[:-1])
+                else:
+                    tmp = json.loads(line)
                 # task_queue.put('{}:{}'.format(tmp['ip'],tmp['ports'][0]['port']))
                 task_queue.put(dict({'ip':tmp['ip'],'port':str(tmp['ports'][0]['port'])}))
         ff.close()
