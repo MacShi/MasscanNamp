@@ -24,7 +24,7 @@ def run_masscan():
         print("[run_masscan Error] {}".format(str(e)))
         return False
 
-def nmap_scan_port(ip_port,result_queue):
+def nmap_scan_port(ip_port:dict,result_queue:Queue)->Queue:
     try:
         nm = nmap.PortScanner()
         ip = ip_port['ip']
@@ -43,7 +43,7 @@ def nmap_scan_port(ip_port,result_queue):
     except  Exception as e:
         print(str(e))
 
-def extract_masscan_json(result):
+def extract_masscan_json(result:str)->Queue:
     task_queue = Queue()
     with open(result,'r') as ff:
         for line in ff.readlines():
@@ -56,7 +56,7 @@ def extract_masscan_json(result):
         task_queue.put("aaa")
     return task_queue
 
-def run_nmap(process_num,task_queue,result_queue):
+def run_nmap(process_num:int,task_queue:Queue,result_queue:Queue)->Queue:
     pool = Pool(process_num)
     while not task_queue.empty():
         ip_port = task_queue.get()
@@ -65,12 +65,12 @@ def run_nmap(process_num,task_queue,result_queue):
     pool.join()
 
     return result_queue
-def save_service_info(result_queue):
+def save_service_info(result_queue:Queue):
     while not result_queue.empty():
         server_info = str(result_queue.get())+'\n'
         with open('service_info.txt','a',encoding="utf-8") as ff:
             ff.write(str(server_info))
-    ff.close()
+            ff.close()
 
 
 if __name__ == '__main__':
